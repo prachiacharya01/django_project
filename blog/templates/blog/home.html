@@ -1,0 +1,38 @@
+{% extends "blog/base.html" %}
+
+{% block content%}
+    {% for post in posts %}
+        <article class="media content-section">
+          <div>
+          <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}">
+            Title: <a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a>
+            <br>
+            Author : <a class="article-titlemr-2" href="">{{ post.author|capfirst }}</a><br>
+                <small class="text-muted">{{ post.date }}</small>
+
+              <textarea style="overflow:hidden;" class="form-control" rows="1">
+                {{ post.content }}
+              </textarea>
+            {% comment %} <form action= '{%url 'blog-like'  post.pk %}' method='POST'>
+              {% csrf_token %}
+              {%if user.is_authenticated%}
+                {%if clicked%} 
+                  <a href="#">
+                    <button type='submit' name='' value='{{post.id }}' class="btn btn-outline-primary">Like</button>
+                  </a>                 
+                {%else%}
+                    <a href="#">
+                      <button class="btn btn-outline-primary">Like</button>
+                    </a>
+                {%endif%}
+
+              {%else%}
+                  <h5><a href="#">Login</a> to Like this post</h5> 
+              {%endif%}
+
+               <strong class="text-secondary">Like {{post.like}} </strong>
+            </div>
+          </form> {% endcomment %}
+          </article>
+    {% endfor %}
+{%endblock%} 

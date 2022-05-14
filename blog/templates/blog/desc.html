@@ -1,0 +1,43 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <h1> Title : {{object.title}}</h1>
+    <h2>Author : {{object.author}}</h2>
+    <div class="col">
+      {{ object.content }}
+    </div>
+    <br>
+    <div>
+    {%if user.is_authenticated%}
+        <form method="POST">
+        
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom ">
+                    {{form}}
+
+                    <span class="form-group">
+                        <button class="btn btn-outline-info" type="submit" action="{% url 'desc' object.id%}">
+                            Add comment
+                        </button>
+                    </span>                    
+                </legend>
+            </fieldset>
+        </form>
+    </div>
+    <div>
+        {% if comment_obj%}
+        <h5>COMMENTS</h5>
+        {% for i in comment_obj %}
+            {{i.describ}} commented by {{i.commentor.username}}
+            <br>
+        {%endfor%}
+        {%else%}
+            <h2>NO COMMENTS</h2>
+        {%endif%}
+    </div>
+    {%else%}
+    <h5>  <a href="{% url 'blog-login' %}">Login</a> to add comments</h5>
+    {%endif%}
+    <br>   
+{% endblock %}

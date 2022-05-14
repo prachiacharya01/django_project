@@ -1,0 +1,12 @@
+{% extends "blog/base.html" %}
+
+{% block content%}
+{%if post%}
+<h1>Search found</h1>
+{%for i in post%}
+    <h2><a href="{% url 'post-detail' i.id %}">{{i.title}}</a></h2>
+{%endfor%}
+    {%else%}
+    <h2>No relevant data found</h2>
+{%endif%}
+{%endblock%}
