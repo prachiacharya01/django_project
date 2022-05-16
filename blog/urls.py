@@ -18,7 +18,8 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(template_name = 'blog/logout.html'),name='blog-logout'),  
     path('searchbar/',views.search,name='searchbar'),
     path('desc/<int:pk>/',desc1.as_view(template_name = 'blog/desc.html'),name='desc'),
-    path('like/<int:pk>/',views.LikeView,name='blog-like')
+    # path('like/<int:pk>/',views.LikeView,name='blog-like'),
+    # path('like/<int:pk>/',views.DisLikeView,name='blog-dislike')
     # path('a/',views.desc,name="a")
     # path('register/',views.register,name='blog-register')
 ]

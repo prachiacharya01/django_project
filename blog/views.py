@@ -14,29 +14,78 @@ class PostListView(ListView):
     context_object_name = 'posts'
     ordering = ['-date']
 
-    
 class PostDetailView(DetailView):
     model = Post
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        P = Post.objects.filter(id = self.object.id).first()
+        print(P)
+        totallikes= P.likes.through.objects.filter(post_id = kwargs['pk']).count()
+        post_set = P.likes.through.objects.filter(post_id = kwargs['pk'])
+        user_set = P.likes.through.objects.filter(user_id = request.user) 
+        liked = 0        
+        if totallikes: 
+            flag= 0
+            for i in post_set:
+                for j in user_set: 
+                    print(i.id,j.id)              
+                    if i.id == j.id :
+                        liked = 1
+                        flag = 1
+                        break
+                    else:
+                        liked = 0
+                if flag == 1:
+                    break
+        else:
+            liked = 0
 
-    def get_context_data(self,*args, **kwargs):
-        stuff = get_object_or_404(Post, id = self.kwargs['pk']).id
-        print(stuff)
-        total_like = Post.objects.get(id = stuff)
-        print(total_like)
-        context= {'likes':total_like}
-        return context
-        
-def LikeView(request,pk): 
-    post = get_object_or_404(Post, id = request.POST.get('post_id'))
-    post.likes.add(request.user)
-    return HttpResponseRedirect(reverse('blog-home'),args=[str(pk)])
+        context = {'object':self.object,"totallikes":totallikes,"clicked":liked}
+        return self.render_to_response(context)
+
+    def post(self,request,*args,**kwargs):
+
+        self.object = self.get_object()
+        P = Post.objects.filter(id = self.object.id).first()
+        obj = P.likes.through.objects.create(user_id = request.user.id, post_id = kwargs['pk'])
+        obj.save()
+        totallikes= P.likes.through.objects.filter(post_id = kwargs['pk']).count()
+        post_set = P.likes.through.objects.filter(post_id = kwargs['pk'])
+        user_set = P.likes.through.objects.filter(user_id = request.user) 
+        if totallikes: 
+            flag= 0
+            for i in post_set:
+                for j in user_set: 
+                    print(i.id,j.id)              
+                    if i.id == j.id:
+                        liked = 1
+                        flag = 1
+                        break
+                    else:
+                        liked = 0
+                if flag == 1:
+                    break
+        else:
+            liked = 0
+        context = {'object':self.object,"totallikes":totallikes,"clicked":liked}
+        return self.render_to_response(context)
+
+# def LikeView(request,pk): 
+#     post = get_object_or_404(Post, id = request.POST.get('post_id'))
+#     post.likes.add(request.user)
+#     return HttpResponseRedirect(reverse('blog-detail'),args=[str(pk)])
+
+# def DisLikeView(request,pk): 
+#     post = get_object_or_404(Post, id = request.POST.get('post_id'))
+#     post.likes.delete(request.user)
+#     return render(request,'blog/post_detail.html')
 
 def about(request):
     return render(request,'blog/about.html',{'title' : "About"})
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    fields = ['title','content','like']
+    fields = ['title','content','likes']
 
     def form_valid(self, form):
         form.instance.author = self.request.user

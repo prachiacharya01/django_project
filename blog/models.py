@@ -8,7 +8,7 @@ class Post(models.Model):
     content = models.TextField()
     date = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete = models.CASCADE)
-    likes = models.ManyToManyField(User,related_name='blogpost_like')
+    likes = models.ManyToManyField(User,related_name='blogpost_likes')
 
     def total_likes(self):
         return self.likes.count()

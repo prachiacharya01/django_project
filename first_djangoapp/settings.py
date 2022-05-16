@@ -148,4 +148,4 @@ LOGIN_REDIRECT_URL = 'blog-home'
 
 LOGIN_URL = 'blog-login'
 
-# like, dislike comment sections, charity, userprofile, UI
+#  charity, userprofile, UI

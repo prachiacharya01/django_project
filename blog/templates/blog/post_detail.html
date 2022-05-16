@@ -1,49 +1,36 @@
 {% extends "blog/base.html" %}
 
 {% block content%}
-        <!-- <article class="media content-section">
-            <img class="rounded-circle article-img" src="{{ object.author.profile.image.url }}">
-            <div class="media-body">
-            <div class="article-metadata">
-                <a class="mr-2" href="#">{{ object.author }}</a>
-                <small class="text-muted">{{ object.date_posted }}</small>
-            </div>
-            <h2 class="article-title">{{ object.title }}</h2>
-            <p class="article-content">{{ object.content }}</p>
-            <a class=" btn btn-outline-success " href ="{% url 'post-update' object.id %}"> Update</a>
-            <a class=" btn btn-outline-danger " href ="{% url 'post-delete' object.id %}"> Delete</a>
-            </div>
-        </article> -->
         
         <div class="card" style="width: 18rem;">
           <img class="card-img-top" src="{{ object.author.profile.image.url }}" alt="Card image cap">
           <div class="card-body">
             <h5 class="card-title">{{ object.title }}</h5>
             <textarea style = "overflow: hidden;"name="" id="" cols="25" rows="1">{{ object.content }}</textarea>
-            <!-- <p class="card-text">{{ object.content }}</p> -->
             <a class=" btn btn-outline-success w-100 " href ="{% url 'desc' object.id %}"> Read whole blog  </a>  
             <a class=" btn btn-outline-success " href ="{% url 'post-update' object.id %}">Edit</a>
             <a class=" btn btn-outline-danger " href ="{% url 'post-delete' object.id %}">Delete</a>
             <!-- <a class=" btn btn-outline-success w-33 " href ="{% url 'post-donate' %}" > Charity </a>   -->
             
-            <form action= '{%url 'blog-like'  object.pk %}' method='POST'>
+            <form method='POST'>
               {% csrf_token %}
               {%if user.is_authenticated%}
                 {%if clicked%} 
-                  <a href="#">
-                    <button type='submit' name='' value='{{post.id}}' class="btn btn-outline-primary">Like</button>
-                  </a>                 
+             Liked Already
+                  {% comment %} <a>
+                    <button class="btn btn-success">Liked Already</button>
+                  </a>                  {% endcomment %}
                 {%else%}
-                    <a href="#">
-                      <button class="btn btn-outline-primary">Like</button>
+                    <a>
+                      <button type='submit' class="btn btn-outline-primary">Like</button>
                     </a>
                 {%endif%}
-
               {%else%}
-                  <h5><a href="{% url 'blog-login' %}">Login</a> to Like this post</h5> 
+                  <h5><a action="{% url 'blog-login' %}">Login</a> to Like this post</h5> 
               {%endif%}
-
-               <strong class="text-secondary">Like {{total_likes}} </strong>
+              <br>
+              Total Likes
+               <strong class="text-secondary">  {{totallikes}} </strong>
             </div>
           </form>
          </div>
