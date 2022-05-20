@@ -1,9 +1,29 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from requests import request
 from .forms import UserRegistrationFrom, UserUpdateForm, ProfileUpdateForm
 from blog.models import Post
 
+# serializer
+from rest_framework.response import Response
+from rest_framework.views import APIView 
+from .serializers import ProfileSerializer
+from rest_framework.generics import ListAPIView, CreateAPIView
+# serializer views --cbv
+
+class ProfileSerializerView(CreateAPIView):
+    serializer_class = ProfileSerializer
+    # queryset = 
+    def post(self,request):
+        return self.create(request)
+    def get(self,request):
+        return 
+
+
+
+
+# django views
 def register(request):
     if request.method == 'POST':
         form = UserRegistrationFrom(request.POST)
@@ -44,5 +64,4 @@ def profile(request):
 
     return render(request,'user/profile.html',context)
 
-# class profile(View):
-#     def post():
+

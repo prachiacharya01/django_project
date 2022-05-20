@@ -1,3 +1,4 @@
+import time
 from django.http import HttpResponse,HttpResponseRedirect
 import razorpay
 from django.shortcuts import get_object_or_404, render
@@ -9,6 +10,18 @@ from django.contrib.auth.models import User
 from blog.forms import CommentForm
 from django.urls import reverse
 
+# serializers
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+# serializer views
+class hello(APIView):
+    
+    def get(self,request):
+        return Response({"message":"hey"})
+
+
+# django views
 class PostListView(ListView):
     model = Post
     context_object_name = 'posts'
@@ -16,58 +29,72 @@ class PostListView(ListView):
 
 class PostDetailView(DetailView):
     model = Post
+
     def get(self, request, *args, **kwargs):
+        liked = 0
         self.object = self.get_object()
         P = Post.objects.filter(id = self.object.id).first()
         print(P)
         totallikes= P.likes.through.objects.filter(post_id = kwargs['pk']).count()
-        post_set = P.likes.through.objects.filter(post_id = kwargs['pk'])
-        user_set = P.likes.through.objects.filter(user_id = request.user) 
-        liked = 0        
-        if totallikes: 
-            flag= 0
-            for i in post_set:
-                for j in user_set: 
-                    print(i.id,j.id)              
-                    if i.id == j.id :
-                        liked = 1
-                        flag = 1
-                        break
-                    else:
-                        liked = 0
-                if flag == 1:
-                    break
-        else:
-            liked = 0
+        is_liked:bool = P.likes.through.objects.filter(post_id = kwargs['pk'],user_id = request.user.id).exists()
 
-        context = {'object':self.object,"totallikes":totallikes,"clicked":liked}
+        # start = time.time()
+
+        # post_set = P.likes.through.objects.filter(post_id = kwargs['pk'])
+        # user_set = P.likes.through.objects.filter(user_id = request.user) 
+        # liked = 0      
+        # likes__kwargs  
+        # if totallikes: 
+        #     flag= 0
+        #     for i in post_set:
+        #         for j in user_set: 
+        #             # print(i.id,j.id)              
+        #             if i.id == j.id :
+        #                 liked = 1
+        #                 flag = 1
+        #                 break
+        #             else:
+        #                 liked = 0
+        #         if flag == 1:
+        #             break
+        # else:
+        #     liked = 0
+        # end = time.time()
+        # print(end - start)
+        context = {'object':self.object,"totallikes":totallikes,"clicked":is_liked}
         return self.render_to_response(context)
 
-    def post(self,request,*args,**kwargs):
-
+    def post(self,request, *args, **kwargs):
+        liked = 0
         self.object = self.get_object()
         P = Post.objects.filter(id = self.object.id).first()
         obj = P.likes.through.objects.create(user_id = request.user.id, post_id = kwargs['pk'])
         obj.save()
         totallikes= P.likes.through.objects.filter(post_id = kwargs['pk']).count()
-        post_set = P.likes.through.objects.filter(post_id = kwargs['pk'])
-        user_set = P.likes.through.objects.filter(user_id = request.user) 
-        if totallikes: 
-            flag= 0
-            for i in post_set:
-                for j in user_set: 
-                    print(i.id,j.id)              
-                    if i.id == j.id:
-                        liked = 1
-                        flag = 1
-                        break
-                    else:
-                        liked = 0
-                if flag == 1:
-                    break
-        else:
-            liked = 0
-        context = {'object':self.object,"totallikes":totallikes,"clicked":liked}
+        is_liked:bool = P.likes.through.objects.filter(post_id = kwargs['pk'],user_id = request.user.id).exists()
+        # if is_liked:
+        #     liked = 1
+        # post_set = P.likes.through.objects.filter(post_id = kwargs['pk'])
+        # user_set = P.likes.through.objects.filter(user_id = request.user) 
+        # start = time.time()
+        # if totallikes: 
+        #     flag= 0
+        #     for i in post_set:
+        #         for j in user_set: 
+        #             # print(i.id,j.id)              
+        #             if i.id == j.id:
+        #                 liked = 1
+        #                 flag = 1
+        #                 break
+        #             else:
+        #                 liked = 0
+        #         if flag == 1:
+        #             break
+        # else:
+        #     liked = 0
+        # end  = time.time()
+        # print(end - start)
+        context = {'object':self.object,"totallikes":totallikes,"clicked":is_liked}
         return self.render_to_response(context)
 
 # def LikeView(request,pk): 
@@ -85,7 +112,7 @@ def about(request):
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    fields = ['title','content','likes']
+    fields = ['title','content']
 
     def form_valid(self, form):
         form.instance.author = self.request.user

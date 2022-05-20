@@ -22,5 +22,9 @@ urlpatterns = [
     # path('like/<int:pk>/',views.DisLikeView,name='blog-dislike')
     # path('a/',views.desc,name="a")
     # path('register/',views.register,name='blog-register')
+
+
+    # serializers
+    path("s1/",views.hello.as_view(), name="s1"),
 ]
  

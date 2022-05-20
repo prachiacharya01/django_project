@@ -24,7 +24,14 @@ urlpatterns = [
     path('register/', user_views.register, name = 'register'),
     path('profile/', user_views.profile, name = 'profile'),
     path('', include('blog.urls')),
+    # dedbug
+    path('__debug__/', include('debug_toolbar.urls')),
+
+    # serializers
+    path("g1/",user_views.ProfileSerializerView.as_view(),name="g1")
+   
 ]
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
