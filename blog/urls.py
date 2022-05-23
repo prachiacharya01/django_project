@@ -1,9 +1,15 @@
-from re import template
-from django.urls import path
+from django.urls import path, include
 from . import views
 from django.contrib.auth import views as auth_views
 from .views import PostListView, PostDetailView, PostCreateView ,PostUpdateView,PostDeleteView,desc1
 # from blog import admin
+
+from rest_framework import routers
+from .views import PostSerialzerView
+
+router = routers.DefaultRouter()
+router.register('postserial', PostSerialzerView, basename='postserial')
+# urlpatterns = router.urls
 
 urlpatterns = [
     # path('', views.home, name ='blog-home'),
@@ -23,8 +29,8 @@ urlpatterns = [
     # path('a/',views.desc,name="a")
     # path('register/',views.register,name='blog-register')
 
-
     # serializers
     path("s1/",views.hello.as_view(), name="s1"),
+    path('', include(router.urls)),
 ]
  

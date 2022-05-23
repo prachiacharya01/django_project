@@ -4,26 +4,34 @@ from django.contrib import messages
 from requests import request
 from .forms import UserRegistrationFrom, UserUpdateForm, ProfileUpdateForm
 from blog.models import Post
+from .models import Profile
 
-# serializer
+# serializer --------------------------------------------------------------------------------------------------------------------
 from rest_framework.response import Response
 from rest_framework.views import APIView 
 from .serializers import ProfileSerializer
-from rest_framework.generics import ListAPIView, CreateAPIView
-# serializer views --cbv
+from rest_framework.generics import ListAPIView, UpdateAPIView, RetrieveAPIView
 
-class ProfileSerializerView(CreateAPIView):
+# serializer views --cbv----------------------------------------------------------------------------------------------------------
+class ProfileSerializerView(ListAPIView, UpdateAPIView, RetrieveAPIView):
     serializer_class = ProfileSerializer
-    # queryset = 
-    def post(self,request):
-        return self.create(request)
-    def get(self,request):
-        return 
+    queryset = Profile.objects.all()
+    def get(self,request, pk = None):
+        if pk:
+            return self.retrieve(request)
+        else:
+            return self.list(request)
+    # def get_queryset(self):
+    #     queryset = Profile.objects.filter(user_id = request.user.id)
+    #     if not queryset:
+    #         return Response({"mess":"err"})
+    #     else:
+    #         return queryset
+    def put(self,request, pk = None):
+        return self.update(request, pk)
 
 
-
-
-# django views
+# django views --------------------------------------------------------------------------------------------------------------------
 def register(request):
     if request.method == 'POST':
         form = UserRegistrationFrom(request.POST)
@@ -61,7 +69,4 @@ def profile(request):
         'p_form' : p_form,
         'post_ids' : post_ids
     }
-
     return render(request,'user/profile.html',context)
-
-

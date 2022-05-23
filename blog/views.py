@@ -1,31 +1,81 @@
 import time
-from django.http import HttpResponse,HttpResponseRedirect
+from django.http import HttpResponse,HttpResponseRedirect, QueryDict
 import razorpay
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 from django.views.generic import ListView,DetailView, CreateView, UpdateView, DeleteView
+from requests import request
 from .models import Post 
 from .models import comment
 from django.contrib.auth.models import User
 from blog.forms import CommentForm
 from django.urls import reverse
 
-# serializers
+# serializers -------------------------------------------------------------------------------------------------------------
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-# serializer views
+from rest_framework import viewsets
+from .serializers import PostSerializer
+from rest_framework import status
+# serializer views ----------------------------------------------------------------------------------------------------------
 class hello(APIView):
     
     def get(self,request):
         return Response({"message":"hey"})
 
 
-# django views
+class PostSerialzerView(viewsets.ViewSet):
+    def list(self, request):
+        queryset = Post.objects.all()
+        # breakpoint()
+        serializer = PostSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def destroy(self, request,pk = None):
+        get_obj = Post.objects.get(id = pk)
+        get_obj.delete()
+        return Response({"message":"Data Deleted"})
+    
+    def partial_update(self, request, pk = None):
+        get_obj = Post.objects.get(id = pk)
+        serializer = PostSerializer(get_obj, data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+
+    def create(self, request):
+        serializer = PostSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"msg":"Data Created"},serializer.data)
+        return Response(serializer.errors)
+
+    def update(self, request, pk = None):
+        get_obj = Post.objects.get(id = pk)
+        serializer = PostSerializer(get_obj, data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+
+    def retrieve(self, request, pk = None):
+        if pk != None:
+            get_obj = Post.objects.get(id = pk)
+            serializer = PostSerializer(get_obj)
+            return Response(serializer.data)
+
+
+
+    
+
+# django views----------------------------------------------------------------------------------------------------------------
 class PostListView(ListView):
     model = Post
     context_object_name = 'posts'
     ordering = ['-date']
+
+    def get_queryset(self):
+        queryset = Post.objects.select_related('author').all()
+        return queryset
 
 class PostDetailView(DetailView):
     model = Post
@@ -149,7 +199,7 @@ def login(request):
 def search(request):
     if request.method == 'GET':
         search = request.GET.get('search')
-        post = Post.objects.all().filter(title__contains=search)
+        post = Post.objects.filter(title__contains=search)
     return render(request,'blog/search.html',{'post':post})
 
 def donate(request):

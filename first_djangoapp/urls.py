@@ -28,8 +28,7 @@ urlpatterns = [
     path('__debug__/', include('debug_toolbar.urls')),
 
     # serializers
-    path("g1/",user_views.ProfileSerializerView.as_view(),name="g1")
-   
+    path("g1/<int:pk>/",user_views.ProfileSerializerView.as_view(),name="g1")
 ]
 
 

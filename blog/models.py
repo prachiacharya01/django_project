@@ -6,9 +6,9 @@ from django.urls import reverse
 class Post(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
-    date = models.DateTimeField(default=timezone.now)
+    date = models.DateTimeField(auto_now_add=timezone.now)
     author = models.ForeignKey(User, on_delete = models.CASCADE)
-    likes = models.ManyToManyField(User,related_name='blogpost_likes')
+    likes = models.ManyToManyField(User,related_name='blogpost_likes', null = True)
 
     def __str__(self):
         return self.title
