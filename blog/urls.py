@@ -5,10 +5,11 @@ from .views import PostListView, PostDetailView, PostCreateView ,PostUpdateView,
 # from blog import admin
 
 from rest_framework import routers
-from .views import PostSerialzerView
+from .views import PostSerialzerView,commentSerializerView
 
 router = routers.DefaultRouter()
 router.register('postserial', PostSerialzerView, basename='postserial')
+router.register("comment",commentSerializerView,basename= "comment")
 # urlpatterns = router.urls
 
 urlpatterns = [
@@ -31,6 +32,6 @@ urlpatterns = [
 
     # serializers
     path("s1/",views.hello.as_view(), name="s1"),
-    path('', include(router.urls)),
+    path('r', include(router.urls)),
+    path('hello/', views.HelloView.as_view(), name ='hello'),
 ]
- 

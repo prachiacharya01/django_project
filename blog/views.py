@@ -1,4 +1,4 @@
-import time
+import datetime
 from django.http import HttpResponse,HttpResponseRedirect, QueryDict
 import razorpay
 from django.shortcuts import get_object_or_404, render
@@ -11,18 +11,28 @@ from django.contrib.auth.models import User
 from blog.forms import CommentForm
 from django.urls import reverse
 
-# serializers -------------------------------------------------------------------------------------------------------------
+# serializers ---------------------------------------------------------------------------------------------------------------
+
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import viewsets
-from .serializers import PostSerializer
+from .serializers import PostSerializer,commentSerilaizer
 from rest_framework import status
-# serializer views ----------------------------------------------------------------------------------------------------------
+from rest_framework.permissions import IsAuthenticated
+
+# serializer views -----------------------------------------------------------------------------------------------------------
+
 class hello(APIView):
     
     def get(self,request):
         return Response({"message":"hey"})
-
+  
+class HelloView(APIView):
+    permission_classes = (IsAuthenticated, )
+  
+    def get(self, request):
+        content = {'message': 'Hello, GeeksforGeeks'}
+        return Response(content)
 
 class PostSerialzerView(viewsets.ViewSet):
     def list(self, request):
@@ -38,7 +48,7 @@ class PostSerialzerView(viewsets.ViewSet):
     
     def partial_update(self, request, pk = None):
         get_obj = Post.objects.get(id = pk)
-        serializer = PostSerializer(get_obj, data = request.data)
+        serializer = PostSerializer(get_obj, data = request.data, partial= True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -46,8 +56,13 @@ class PostSerialzerView(viewsets.ViewSet):
     def create(self, request):
         serializer = PostSerializer(data = request.data)
         if serializer.is_valid():
+            print("POST-----------------------")
+            print(request.POST)
+            print("Data-----------------------")
+            print(request.data)
+
             serializer.save()
-            return Response({"msg":"Data Created"},serializer.data)
+            return Response(serializer.data)
         return Response(serializer.errors)
 
     def update(self, request, pk = None):
@@ -61,11 +76,12 @@ class PostSerialzerView(viewsets.ViewSet):
         if pk != None:
             get_obj = Post.objects.get(id = pk)
             serializer = PostSerializer(get_obj)
-            return Response(serializer.data)
+            return Response(serializer.data)   
 
 
-
-    
+class commentSerializerView(viewsets.ModelViewSet):
+    serializer_class = commentSerilaizer
+    queryset = comment.objects.all()
 
 # django views----------------------------------------------------------------------------------------------------------------
 class PostListView(ListView):
@@ -74,7 +90,7 @@ class PostListView(ListView):
     ordering = ['-date']
 
     def get_queryset(self):
-        queryset = Post.objects.select_related('author').all()
+        queryset = Post.objects.select_related('author__profile').all()
         return queryset
 
 class PostDetailView(DetailView):
