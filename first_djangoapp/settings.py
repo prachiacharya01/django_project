@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'user',
     'crispy_forms',
     'rest_framework',
+    'django_celery_beat'
 ]
 
 MIDDLEWARE = [
@@ -151,6 +152,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 3
 }
 
 SIMPLE_JWT = {
@@ -160,7 +163,19 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
 }
 
-REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 3
-}
+
+CELERY_BROKER_URL = "redis://127.0.0.1:6379"
+
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379'
+
+CELERY_ACCEPT_CONTENT = ['application/json']
+
+CELERY_RESULT_SERIALIZER = 'json'
+
+CELERY_TASK_SERIALIZER = 'json'
+
+CELERY_TIMEZONE = "UTC"
+
+# ------------------CELERY BEAT
+
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseSchduler'

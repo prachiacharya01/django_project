@@ -5,7 +5,8 @@ from requests import request
 from .forms import UserRegistrationFrom, UserUpdateForm, ProfileUpdateForm
 from blog.models import Post
 from .models import Profile
-
+from first_djangoapp.task import test_func
+from django.http import HttpResponse
 # serializer --------------------------------------------------------------------------------------------------------------------
 from rest_framework.response import Response
 from rest_framework.views import APIView 
@@ -13,6 +14,8 @@ from .serializers import ProfileSerializer
 from rest_framework.generics import ListAPIView, UpdateAPIView, RetrieveAPIView
 
 # serializer views --cbv----------------------------------------------------------------------------------------------------------
+
+# ModelSerialiser
 class ProfileSerializerView(ListAPIView, UpdateAPIView, RetrieveAPIView):
     serializer_class = ProfileSerializer
     queryset = Profile.objects.all()
@@ -29,6 +32,7 @@ class ProfileSerializerView(ListAPIView, UpdateAPIView, RetrieveAPIView):
     #         return queryset
     def put(self,request, pk = None):
         return self.update(request, pk)
+
 
 
 # django views --------------------------------------------------------------------------------------------------------------------
@@ -70,3 +74,9 @@ def profile(request):
         'post_ids' : post_ids
     }
     return render(request,'user/profile.html',context)
+
+# celery
+
+def test(request):
+    test_func.delay()
+    return HttpResponse("Done")

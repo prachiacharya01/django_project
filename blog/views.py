@@ -1,5 +1,5 @@
 import datetime
-from django.http import HttpResponse,HttpResponseRedirect, QueryDict
+from django.http import HttpResponse,HttpResponseRedirect
 import razorpay
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin

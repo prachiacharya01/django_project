@@ -14,7 +14,10 @@ urlpatterns = [
     path('__debug__/', include('debug_toolbar.urls')),
 
     # serializers
-    path("g1/<int:pk>/",user_views.ProfileSerializerView.as_view(),name="g1")
+    path("g1/<int:pk>/",user_views.ProfileSerializerView.as_view(),name="g1"),
+
+    # celery
+    path("celery/",user_views.test, name = "celery")
 ]
 
 
@@ -32,5 +35,4 @@ urlpatterns += [
     path('api/token/refresh/',
          jwt_views.TokenRefreshView.as_view(),
          name ='token_refresh'),
-    # path('', include('app.urls')),
 ]
