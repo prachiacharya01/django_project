@@ -11,7 +11,8 @@
             <a class=" btn btn-outline-success " href ="{% url 'post-update' object.id %}">Edit</a>
             <a class=" btn btn-outline-danger " href ="{% url 'post-delete' object.id %}">Delete</a>
             <!-- <a class=" btn btn-outline-success w-33 " href ="{% url 'post-donate' %}" > Charity </a>   -->
-            
+            <a class="navbar-nav nav-item nav-link" href="{% url 'pdf' object.id%}"><button>
+              Download</button></a>
             <form method='POST'>
               {% csrf_token %}
               {%if user.is_authenticated%}
@@ -30,7 +31,8 @@
               {%endif%}
               <br>
               Total Likes
-               <strong class="text-secondary">  {{totallikes}} </strong>
+               <strong class="text-secondary"> {{totallikes}} </strong>
+    
             </div>
           </form>
          </div>

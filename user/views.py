@@ -3,10 +3,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from requests import request
 from .forms import UserRegistrationFrom, UserUpdateForm, ProfileUpdateForm
+from django.http import HttpResponse
 from blog.models import Post
 from .models import Profile
-from first_djangoapp.task import test_func
-from django.http import HttpResponse
+from first_djangoapp.tasks import email_task
 # serializer --------------------------------------------------------------------------------------------------------------------
 from rest_framework.response import Response
 from rest_framework.views import APIView 
@@ -32,8 +32,6 @@ class ProfileSerializerView(ListAPIView, UpdateAPIView, RetrieveAPIView):
     #         return queryset
     def put(self,request, pk = None):
         return self.update(request, pk)
-
-
 
 # django views --------------------------------------------------------------------------------------------------------------------
 def register(request):
@@ -77,6 +75,8 @@ def profile(request):
 
 # celery
 
-def test(request):
-    test_func.delay()
+def test1(request):
+    email_task.delay()
     return HttpResponse("Done")
+
+

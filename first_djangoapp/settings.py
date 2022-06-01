@@ -65,7 +65,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'first_djangoapp.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
@@ -96,7 +95,6 @@ INTERNAL_IPS = [
     # ...
 ]
 
-
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
@@ -115,37 +113,23 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
-
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 MEDIA_URL = '/media/'
-
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
 LOGIN_REDIRECT_URL = 'blog-home'
-
 LOGIN_URL = 'blog-login'
-
-#  charity, userprofile, UI
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -162,19 +146,22 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
 }
 
-
 CELERY_BROKER_URL = "redis://127.0.0.1:6379"
-
 CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379'
-
 CELERY_ACCEPT_CONTENT = ['application/json']
-
 CELERY_RESULT_SERIALIZER = 'json'
-
 CELERY_TASK_SERIALIZER = 'json'
-
 CELERY_TIMEZONE = "UTC"
+CELERY_ENABLE_UTC = True
 
 # ------------------CELERY BEAT
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
-CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseSchduler'
+# email setting
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'ap6810380@gmail.com'
+EMAIL_HOST_PASSWORD = 'lveyiclcsnlhlfpa'
+DEFAULT_FROM_EMAIL = 'Celery <ap6810380@gmail.com>'

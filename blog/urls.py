@@ -34,4 +34,7 @@ urlpatterns = [
     path("s1/",views.hello.as_view(), name="s1"),
     path('r', include(router.urls)),
     path('hello/', views.HelloView.as_view(), name ='hello'),
+  
+    # pdf generator
+    path("pdf/",views.gen_pdf,name="pdf")
 ]

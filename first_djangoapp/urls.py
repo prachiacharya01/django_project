@@ -17,7 +17,8 @@ urlpatterns = [
     path("g1/<int:pk>/",user_views.ProfileSerializerView.as_view(),name="g1"),
 
     # celery
-    path("celery/",user_views.test, name = "celery")
+    path("celery/",user_views.test1, name = "celery")
+
 ]
 
 

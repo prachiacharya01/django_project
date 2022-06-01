@@ -1,5 +1,5 @@
 import datetime
-from django.http import HttpResponse,HttpResponseRedirect
+from django.http import FileResponse, HttpResponse,HttpResponseRedirect,FileResponse
 import razorpay
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
@@ -10,6 +10,10 @@ from .models import comment
 from django.contrib.auth.models import User
 from blog.forms import CommentForm
 from django.urls import reverse
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+import io 
 
 # serializers ---------------------------------------------------------------------------------------------------------------
 
@@ -77,7 +81,6 @@ class PostSerialzerView(viewsets.ViewSet):
             get_obj = Post.objects.get(id = pk)
             serializer = PostSerializer(get_obj)
             return Response(serializer.data)   
-
 
 class commentSerializerView(viewsets.ModelViewSet):
     serializer_class = commentSerilaizer
@@ -256,6 +259,59 @@ class desc1(CreateView):
 
         return render(request,'blog/desc.html',context = context,)
 
+def gen_pdf(request,*args, **kwargs):
+
+    buf = io.BytesIO()
+    c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
+    textob = c.beginText()
+    textob.setTextOrigin(inch,inch)
+    textob.setFont('Helvetica',14)
+    post_obj = Post.objects.values_list("id",flat=True)
+    # breakpoint()
+    lines = []
+    print(len(post_obj))
+    for i in (range(0,len(post_obj))):
+        lines.append(post_obj[i])
+        print(lines)
+    # lines = [
+    #     "1",n
+    #     "2",
+    #     "3",
+    # ]
+    i = 0
+    while(i!= len(lines)):
+        for line in lines:
+            textob.textLine(line[i])
+            i = i+1
+
+    c.drawText(textob)
+    c.showPage()
+    c.save()
+    buf.seek(0)
+    return FileResponse(buf,as_attachment=True, filename='venue.pdf') 
+
+# class gen_pdf(CreateView):
+
+#     def get(self,request,*args,**kwargs):
+#         buf = io.BytesIO()
+#         c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
+#         textob = c.beginText()
+#         textob.setTextOrigin(inch,inch)
+#         textob.setFont('Helvetica',14)
+#         # post_obj = Post.objects.get(id = kwargs['pk'])
+#         lines = [
+#             "1",
+#             "2",
+#             "3",
+#         ]
+#         for line in lines:
+#             textob.textLine(line)
+
+#         c.drawText(textob)
+#         c.showPage()
+#         c.save()
+#         buf.seek(0)
+#         return FileResponse(buf,as_attachment=True, filename='venue.pdf')
 # def desc(request):
 #     return HttpResponse(request, 'blog/desc.html')
 
