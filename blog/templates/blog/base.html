@@ -47,7 +47,7 @@
                     {%else%}
                     <a class="nav-item nav-link" href="{% url 'blog-login' %}">Login</a>
                     <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
-                    <a class="navbar-nav nav-item nav-link" href="{% url 'pdf' %}">Download</a>
+                    {% comment %} <a class="navbar-nav nav-item nav-link" href="{% url 'pdf' %}">Download</a> {% endcomment %}
                 {% endif %}
             </div>
             <form action="{%  url 'searchbar' %}" method="GET">

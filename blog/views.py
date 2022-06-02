@@ -259,30 +259,35 @@ class desc1(CreateView):
 
         return render(request,'blog/desc.html',context = context,)
 
-def gen_pdf(request,*args, **kwargs):
-
+def gen_pdf(request,**kwargs):
+    id = kwargs['pk']
     buf = io.BytesIO()
     c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
     textob = c.beginText()
     textob.setTextOrigin(inch,inch)
     textob.setFont('Helvetica',14)
-    post_obj = Post.objects.values_list("id",flat=True)
-    # breakpoint()
-    lines = []
-    print(len(post_obj))
-    for i in (range(0,len(post_obj))):
-        lines.append(post_obj[i])
-        print(lines)
-    # lines = [
-    #     "1",n
-    #     "2",
-    #     "3",
-    # ]
-    i = 0
-    while(i!= len(lines)):
-        for line in lines:
-            textob.textLine(line[i])
-            i = i+1
+    post_obj =Post.objects.values('id','author__username','content')
+    # print("------------------------------------------",post_obj.get(id=id))
+    # print("post_obj",post_obj)
+    # lines = ["Author :",] 
+    # print(len(post_obj))
+    # for i in (range(0,len(post_obj))):
+    #     lines.append(Post.objects.get(id = (post_obj[i])))
+    # print(lines)
+    lines = post_obj.get(id=id)
+    line = "Author : " + lines['author__username'] + "\nContent: "+ lines['content']
+    textob.textLines(str(line))
+    # line = "Content: "+ lines['content']
+    # b = textob.textLine(str(line))
+    # textob.textLines((a,b))
+    # import pdb;
+    # pdb.set_trace()
+    # i = 0
+    # while(i!= len(lines)):
+    #     for line in lines:
+    #         # print(line)
+    #         textob.textLine(str(line))
+    #         i = i+1
 
     c.drawText(textob)
     c.showPage()
@@ -290,30 +295,6 @@ def gen_pdf(request,*args, **kwargs):
     buf.seek(0)
     return FileResponse(buf,as_attachment=True, filename='venue.pdf') 
 
-# class gen_pdf(CreateView):
-
-#     def get(self,request,*args,**kwargs):
-#         buf = io.BytesIO()
-#         c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
-#         textob = c.beginText()
-#         textob.setTextOrigin(inch,inch)
-#         textob.setFont('Helvetica',14)
-#         # post_obj = Post.objects.get(id = kwargs['pk'])
-#         lines = [
-#             "1",
-#             "2",
-#             "3",
-#         ]
-#         for line in lines:
-#             textob.textLine(line)
-
-#         c.drawText(textob)
-#         c.showPage()
-#         c.save()
-#         buf.seek(0)
-#         return FileResponse(buf,as_attachment=True, filename='venue.pdf')
-# def desc(request):
-#     return HttpResponse(request, 'blog/desc.html')
 
 # def home(request):
 

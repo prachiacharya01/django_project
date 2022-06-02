@@ -36,5 +36,5 @@ urlpatterns = [
     path('hello/', views.HelloView.as_view(), name ='hello'),
   
     # pdf generator
-    path("pdf/",views.gen_pdf,name="pdf")
+    path("pdf/<int:pk>/",views.gen_pdf,name="pdf")
 ]
