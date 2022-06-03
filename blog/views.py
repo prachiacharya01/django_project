@@ -104,7 +104,7 @@ class PostDetailView(DetailView):
         self.object = self.get_object()
         P = Post.objects.filter(id = self.object.id).first()
         print(P)
-        totallikes= P.likes.through.objects.filter(post_id = kwargs['pk']).count()
+        totallikes = P.likes.through.objects.filter(post_id = kwargs['pk']).count()
         is_liked:bool = P.likes.through.objects.filter(post_id = kwargs['pk'],user_id = request.user.id).exists()
 
         # start = time.time()

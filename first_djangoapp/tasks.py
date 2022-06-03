@@ -7,7 +7,7 @@ from blog.models import Post
 from django.core.mail import send_mail
 from first_djangoapp import settings
 
-@shared_task(bind= True)
+@shared_task(bind=True)
 def email_task(self):
     list1 = ""
     diff_time = datetime.now(tz = pytz.timezone('UTC')) - timedelta(hours = 1)
