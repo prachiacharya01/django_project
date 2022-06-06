@@ -122,14 +122,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-# Static files = (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = '/static/'
-# STATICFILES_DIR = {
-#     os.path.join(BASE_DIR,'static')
-# }
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
@@ -172,4 +165,12 @@ EMAIL_HOST_USER = 'ap6810380@gmail.com'
 EMAIL_HOST_PASSWORD = 'lveyiclcsnlhlfpa'
 DEFAULT_FROM_EMAIL = 'Celery <ap6810380@gmail.com>'
 
+# Static files = (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/2.2/howto/static-files/
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'STATICFILES_DIR')
+STATIC_URL = '/static/'
+STATICFILES_DIR = {
+    os.path.join(BASE_DIR,'static')
+}
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
