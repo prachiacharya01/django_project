@@ -1,6 +1,9 @@
 import os
 from datetime import timedelta
 from pickle import TRUE
+# [19:59] Prarthana Maheta
+import django_heroku
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -174,4 +177,7 @@ STATICFILES_DIR = {
     os.path.join(BASE_DIR,'static')
 }
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# [19:59] Prarthana Maheta
+django_heroku.settings(locals())
+
 
