@@ -42,6 +42,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+
 ]
 
 ROOT_URLCONF = 'first_djangoapp.urls'
@@ -80,10 +82,10 @@ WSGI_APPLICATION = 'first_djangoapp.wsgi.application'
 DATABASES={
    'default':{
       'ENGINE':'django.db.backends.postgresql_psycopg2',
-      'NAME':'final_blog',
-      'USER':'postgres',
-      'PASSWORD':'Simform@123',
-      'HOST':'localhost',
+      'NAME':'dara5i5k7idsom',
+      'USER':'xwpfxhklfhevkt',
+      'PASSWORD':'2f5871a7cfe783f57428b8c631d8580bcdf4a2dbd7b0f77967188bf1e828cebf',
+      'HOST':'ec2-54-211-255-161.compute-1.amazonaws.com',
       'PORT':'5432',
    }
 }
@@ -122,7 +124,6 @@ USE_L10N = True
 USE_TZ = True
 # Static files = (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-# whitenoice
 
 STATIC_URL = '/static/'
 # STATICFILES_DIR = {
@@ -170,3 +171,5 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'ap6810380@gmail.com'
 EMAIL_HOST_PASSWORD = 'lveyiclcsnlhlfpa'
 DEFAULT_FROM_EMAIL = 'Celery <ap6810380@gmail.com>'
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
