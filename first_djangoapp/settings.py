@@ -1,7 +1,6 @@
 import os
 from datetime import timedelta
 from pickle import TRUE
-# [19:59] Prarthana Maheta
 import django_heroku
 
 
