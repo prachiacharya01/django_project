@@ -111,7 +111,7 @@ font-size: 2.5rem;
 
 <body>
 <header class="site-header">
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+    <nav class="navbar navbar-expand-md navbar-dark">
         <div class="container">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -120,7 +120,6 @@ font-size: 2.5rem;
             <div class="navbar-nav mr-auto">
                 <a class="nav-item nav-link" href="{% url 'blog-home' %}">Home</a>
                 <a class="nav-item nav-link" href="{% url 'blog-about' %}">About</a>
-
             </div>
             <div class="navbar-nav">
                 {%if user.is_authenticated%}
