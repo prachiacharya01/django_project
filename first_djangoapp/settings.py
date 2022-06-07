@@ -19,6 +19,7 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -31,7 +32,6 @@ INSTALLED_APPS = [
     'crispy_forms',
     'rest_framework',
     'django_celery_beat',
-    'whitenoise.runserver_nostatic'
 ]
 
 MIDDLEWARE = [
@@ -169,12 +169,12 @@ DEFAULT_FROM_EMAIL = 'Celery <ap6810380@gmail.com>'
 # Static files = (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'STATICFILES_DIR')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
-STATICFILES_DIR = {
-    os.path.join(BASE_DIR,'static')
-}
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_DIR = {
+#     os.path.join(BASE_DIR,'static')
+# }
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 django_heroku.settings(locals())
 
 
