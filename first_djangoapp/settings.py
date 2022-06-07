@@ -1,7 +1,7 @@
 import os
 from datetime import timedelta
 from pickle import TRUE
-import django_heroku
+# import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -15,6 +15,8 @@ SECRET_KEY = '1hn77bm(=1y@54o4vz=mx&p90!^%k#uh0ug01vqi_46+ek=buy'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 ALLOWED_HOSTS = ["*"]
+# DEBUG = True
+# ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -125,8 +127,6 @@ USE_L10N = True
 USE_TZ = True
 
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'blog-home'
 LOGIN_URL = 'blog-login'
@@ -168,13 +168,16 @@ DEFAULT_FROM_EMAIL = 'Celery <ap6810380@gmail.com>'
 
 # Static files = (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
-# STATICFILES_DIR = {
+# STATICFILES_DIRS = [
 #     os.path.join(BASE_DIR,'static')
-# }
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
-django_heroku.settings(locals())
+# ]
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+# django_heroku.settings(locals())
 
 

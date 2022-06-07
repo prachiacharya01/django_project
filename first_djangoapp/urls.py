@@ -9,7 +9,7 @@ from django.views.static import serve
 
 urlpatterns = [
     re_path(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}), 
-    re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}), 
+    # re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}), 
     path('admin/', admin.site.urls),
     path('register/', user_views.register, name = 'register'),
     path('profile/', user_views.profile, name = 'profile'),
@@ -23,10 +23,11 @@ urlpatterns = [
     # celery
     path("celery/",user_views.test1, name = "celery")
     
-]+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] 
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# if settings.DEBUG:
+# urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 admin.site.site_header = "Blog Admin"
 admin.site.site_title = "Admin Portal"
