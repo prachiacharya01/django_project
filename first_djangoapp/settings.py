@@ -3,10 +3,8 @@ from datetime import timedelta
 from pickle import TRUE
 import django_heroku
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -32,11 +30,13 @@ INSTALLED_APPS = [
     'user',
     'crispy_forms',
     'rest_framework',
-    'django_celery_beat'
+    'django_celery_beat',
+    'whitenoise.runserver_nostatic'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -44,7 +44,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-    "whitenoise.middleware.WhiteNoiseMiddleware",
 
 ]
 
@@ -176,7 +175,6 @@ STATICFILES_DIR = {
     os.path.join(BASE_DIR,'static')
 }
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-# [19:59] Prarthana Maheta
 django_heroku.settings(locals())
 
 
