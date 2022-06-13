@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'rest_framework',
     'django_celery_beat',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -181,3 +182,10 @@ STATIC_URL = '/static/'
 # django_heroku.settings(locals())
 
 
+
+AWS_ACCESS_KEY_ID = 'AKIAXIGVNKOGTM6BC5KC'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'prachidemo-1'
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
